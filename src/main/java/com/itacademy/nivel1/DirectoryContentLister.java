@@ -6,35 +6,35 @@ import java.util.Comparator;
 
 public class DirectoryContentLister {
 
-    public File[] sortedListFilesByName (File file) {
+    public File[] sortedListFilesByName(File directory) {
+        validateDirectory(directory);
 
-        validateDirectory(file);
-        File[] files = getContentOfDirectory(file);
-        Arrays.sort(files, Comparator.comparing(File::getName,String.CASE_INSENSITIVE_ORDER));
+        File[] files = getContentOfDirectory(directory);
+
+        Arrays.sort(files, Comparator.comparing(File::getName, String.CASE_INSENSITIVE_ORDER));
 
         return files;
     }
 
-    private static void validateDirectory(File file) {
-        if(file == null) {
+    private static void validateDirectory(File directory) {
+        if (directory == null) {
             throw new IllegalArgumentException("Error: File is null");
         }
 
-        if(!file.exists()) {
+        if (!directory.exists()) {
             throw new IllegalArgumentException("Error: File doesn't exist");
         }
-        if(!file.isDirectory()) {
+        if (!directory.isDirectory()) {
             throw new IllegalArgumentException("Error: File is not a directory");
         }
     }
 
-    private static File[] getContentOfDirectory(File file) {
+    private static File[] getContentOfDirectory(File directory) {
+        File[] files = directory.listFiles();
 
-        File[] files = file.listFiles();
-        if(files == null) {
+        if (files == null) {
             throw new IllegalStateException("Error: The method listFiles can't get your content");
         }
         return files;
     }
-
 }
