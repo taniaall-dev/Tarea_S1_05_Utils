@@ -1,40 +1,46 @@
 package com.itacademy.nivel1;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class DirectoryContentLister {
 
-    public File[] sortedListFilesByName(File directory) {
+    public Path[] sortedListFilesByName(Path directory) throws IOException{
         validateDirectory(directory);
 
-        File[] files = getContentOfDirectory(directory);
+        Path[] files = getContentOfDirectory(directory);
 
-        Arrays.sort(files, Comparator.comparing(File::getName, String.CASE_INSENSITIVE_ORDER));
+        Arrays.sort(files, Comparator.comparing(
+                path ->path.getFileName().toString(),
+                String.CASE_INSENSITIVE_ORDER
+        ));
 
         return files;
     }
 
-    private static void validateDirectory(File directory) {
+    private static void validateDirectory(Path directory) {
         if (directory == null) {
             throw new IllegalArgumentException("Error: File is null");
         }
 
-        if (!directory.exists()) {
+        if (!Files.exists(directory)) {
             throw new IllegalArgumentException("Error: File doesn't exist");
         }
-        if (!directory.isDirectory()) {
+
+        if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException("Error: File is not a directory");
         }
     }
 
-    private static File[] getContentOfDirectory(File directory) {
-        File[] files = directory.listFiles();
+    private static Path[] getContentOfDirectory(Path directory) throws IOException {
 
-        if (files == null) {
-            throw new IllegalStateException("Error: The method listFiles can't get your content");
+        try (Stream<Path> paths = Files.list(directory)) {
+
+            return paths.toArray(Path[]::new);
         }
-        return files;
     }
 }
