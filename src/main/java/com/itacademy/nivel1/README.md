@@ -2,20 +2,20 @@
 
 ## Descripción
 
-En este nivel trabajamos con diferentes utilidades de Java para gestionar archivos y directorios, así como para leer, escribir y almacenar información en el sistema de archivos.
+En este nivel trabajamos con diferentes utilidades y bibliotecas de Java para gestionar archivos y directorios, así como para leer, escribir y almacenar información en el sistema de archivos.
 
-A través de cinco ejercicios progresivos, ponemos en práctica operaciones habituales en el desarrollo de software, como recorrer directorios, ordenar su contenido, manipular archivos de texto y realizar la serialización de objetos.
+A través de cinco ejercicios, ponemos en práctica operaciones habituales en el desarrollo de software, como recorrer directorios, ordenar su contenido, manipular archivos de texto y trabajar con la persistencia de información.
 
 ## 📌 Instrucciones del ejercicio
 
 El objetivo de este nivel es familiarizarse con las herramientas que proporciona Java para trabajar con el sistema de archivos y desarrollar pequeñas funcionalidades reutilizables.
 
 **Objetivos del nivel:**
-- Utilizar la clase `File` para acceder y gestionar archivos y directorios.
-- Trabajar con estructuras recursivas, como los árboles de directorios.
+- Utilizar las bibliotecas de Java para acceder y gestionar archivos y directorios.
+- Trabajar con estructuras de directorios y sus contenidos.
 - Manipular flujos de entrada y salida (I/O).
 - Leer y escribir información en archivos.
-- Aplicar la persistencia de objetos mediante serialización.
+- Aplicar mecanismos de persistencia de objetos mediante serialización.
 
 ## ✨ Ejercicios
 
@@ -25,12 +25,12 @@ El objetivo de este nivel es familiarizarse con las herramientas que proporciona
 
 **Clase: `DirectoryContentLister`**
 
-Se implementa una clase encargada de obtener y ordenar el contenido de un directorio.
+Se implementa una clase encargada de validar un directorio, obtener su contenido y devolverlo ordenado alfabéticamente por nombre.
 
 **Características:**
-- **`sortedListFilesByName(File file)`**: valida el directorio recibido, obtiene su contenido y devuelve un array de objetos `File` ordenado alfabéticamente por nombre, sin distinguir entre mayúsculas y minúsculas.
-- **`validateDirectory(File file)`**: comprueba que el parámetro no sea `null`, que la ruta exista y que corresponda a un directorio. Si alguna condición no se cumple, lanza una `IllegalArgumentException`.
-- **`getContentOfDirectory(File file)`**: obtiene el contenido mediante `listFiles()`. Si el método devuelve `null`, lanza una `IllegalStateException`.
+- **`sortedListFilesByName(Path directory)`**: valida el directorio recibido, obtiene su contenido y devuelve un array de objetos `Path` ordenado alfabéticamente por nombre, sin distinguir entre mayúsculas y minúsculas.
+- **`validateDirectory(Path directory)`**: comprueba que el parámetro no sea `null`, que la ruta exista y que corresponda a un directorio. Si alguna condición no se cumple, lanza una `IllegalArgumentException`.
+- **`getContentOfDirectory(Path directory)`**: obtiene el contenido del directorio mediante `Files.list()` y devuelve un array de objetos `Path`. Las posibles excepciones de entrada/salida se propagan mediante `IOException`.
 
 **Pruebas unitarias:**
 
@@ -40,3 +40,33 @@ Se utilizan JUnit 5 y AssertJ para comprobar:
 - La validación de parámetros `null`.
 - El rechazo de rutas que no corresponden a directorios.
 - El comportamiento cuando el directorio está vacío.
+
+Las pruebas utilizan `@TempDir` para crear directorios y archivos temporales, evitando depender de rutas específicas del equipo.
+
+### Ejercicio 2 - Listado recursivo de un árbol de directorios
+
+## 🧪 Ejecución de las pruebas desde consola
+
+Los tests se pueden ejecutar desde la terminal, situándose previamente en el directorio raíz del proyecto, donde se encuentra el archivo `pom.xml`.
+
+**Ejecutar todos los tests:**
+
+```bash
+mvn test
+```
+
+**Limpiar los archivos generados y ejecutar todos los tests:**
+
+```bash
+mvn clean test
+```
+
+**Ejecutar los tests de una clase concreta:**
+
+```bash
+mvn -Dtest=NombreDeLaClaseTest test
+```
+
+El comando `mvn clean test` elimina primero el directorio `target` y, a continuación, compila el proyecto y ejecuta las pruebas.
+
+Esta sección recoge los comandos generales que se utilizarán para comprobar los ejercicios de este nivel.
