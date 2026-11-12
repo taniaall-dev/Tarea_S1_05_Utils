@@ -3,47 +3,54 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class DirectoryContentListerTest {
 
     DirectoryContentLister directoryContentLister = new DirectoryContentLister();
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileIsNull() {
+    public void shouldThrowIllegalArgumentExceptionWhenDirectoryIsNull() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> directoryContentLister.sortedListFilesByName(null));
     }
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileDoesNotExist() {
-        File file = new File("C:\\Users\\Tania\\Desktop\\prueba1");
-        assertThatExceptionOfType(IllegalArgumentException.class).
-                isThrownBy(() -> directoryContentLister.sortedListFilesByName(file));
+    public void shouldThrowIllegalArgumentExceptionWhenDirectoryDoesNotExist() {
+        File directory = new File("C:\\Users\\Tania\\Desktop\\test1");
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> directoryContentLister.sortedListFilesByName(directory));
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenFileIsNotDirectory() {
         File file = new File("C:\\Users\\Tania\\Desktop\\imTextFile");
-        assertThatExceptionOfType(IllegalArgumentException.class).
-                isThrownBy(() -> directoryContentLister.sortedListFilesByName(file));
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> directoryContentLister.sortedListFilesByName(file));
     }
 
     @Test
     public void shouldReturnEmptyArrayWhenDirectoryIsEmpty() {
-        File file = new File("C:\\Users\\Tania\\Desktop\\pruebaVacia");
-        File[] sortedList = directoryContentLister.sortedListFilesByName(file);
-        assertThat(sortedList.length).isEqualTo(0);
+        File directory = new File("C:\\Users\\Tania\\Desktop\\emptyTest");
+
+        File[] sortedList = directoryContentLister.sortedListFilesByName(directory);
+
+        assertThat(sortedList).isEmpty();
     }
 
     @Test
     public void sortedListFilesByName_shouldSortFilesByName() {
-        File file = new File("C:\\Users\\Tania\\Desktop\\prueba");
+        File directory = new File("C:\\Users\\Tania\\Desktop\\test");
 
-        File[] sortedList = directoryContentLister.sortedListFilesByName(file);
-        assertThat(sortedList[0].getName()).isEqualTo("Archivo.txt");
-        assertThat(sortedList[1].getName()).isEqualTo("Beta.txt");
-        assertThat(sortedList[2].getName()).isEqualTo("casa.txt");
-        assertThat(sortedList[3].getName()).isEqualTo("zebra.txt");
+        File[] sortedList = directoryContentLister.sortedListFilesByName(directory);
+
+        assertThat(sortedList)
+                .extracting(File::getName)
+                .containsExactly(
+                        "apple.txt",
+                                "Beta.txt",
+                                "house.txt",
+                                "zebra.txt"
+                );
     }
 }
