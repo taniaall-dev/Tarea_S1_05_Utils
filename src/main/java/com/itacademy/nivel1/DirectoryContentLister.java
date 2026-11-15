@@ -33,6 +33,24 @@ public class DirectoryContentLister {
         return directoryEntries;
     }
 
+    public void printDirectoryTree(List<DirectoryEntry> entries, Path rootDirectory) {
+        for (DirectoryEntry entry : entries) {
+
+            Path relativePath = rootDirectory.relativize(entry.getPath());
+            int level = relativePath.getNameCount() -1;
+
+            String indentation = "    ".repeat(level);
+
+            String type = entry.isDirectory() ? "D" : "F";
+
+            String name = entry.getPath().getFileName().toString();
+
+            String lastModified = entry.getLastModified().toString();
+
+            System.out.println(indentation + type  + "  " + name + "  " + lastModified);
+        }
+    }
+
     private void listDirectoryTreeRecursively(Path directory, List<DirectoryEntry> entries) throws IOException {
         Path[] sortedPaths = sortedListFilesByName(directory);
 
